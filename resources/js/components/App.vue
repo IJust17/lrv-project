@@ -1,0 +1,35 @@
+
+<template>
+    <div v-if="article != null" class="alert alert-primary" role="alert">
+        Добавлена новая статья <strong> <a :href="`/article/${article.id}`"> {{ article.name }}</a></strong>
+    </div>
+</template>
+
+<script>
+    export default {
+    data() { return { article: null } },
+        created() {
+            window.Echo.channel('test').listen('NewArticleEvent', (article) => {
+                console.log(article);
+                this.article=article.article;
+                // alert('Добавлена новая статья!');
+            })
+        }
+    }
+</script>
+
+
+
+
+<script>
+    export default {
+    data() { return { msg: null } },
+        created() {
+            window.Echo.channel('my-channel').listen('ArticleCreateEvent', (name) => {
+                console.log(name);
+                this.msg=name.name;
+                // alert('Добавлена новая статья!');
+            })
+        }
+    }
+</script>
